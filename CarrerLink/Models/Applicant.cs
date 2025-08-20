@@ -1,13 +1,25 @@
-﻿namespace CarrerLink.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace CarrerLink.Models
 {
     public class Applicant
     {
-        public string ResumeUrl { get; set; }
+        [Key]
+        public int ApplicantId { get; set; }
+
+        [Required]
+        [ForeignKey("User")]
+        public int UserId { get; set; }
+
+        public string ResumePath { get; set; }
         public string Skills { get; set; }
-        public string ProfilePictureUrl { get; set; }
+        public string ProfilePicturePath { get; set; }
         public string Experience { get; set; }
         public string Education { get; set; }
-        public string Certifications { get; set; }
         public string PortfolioUrl { get; set; }
+
+        // Navigation property (optional)
+        public virtual User User { get; set; }
     }
 }

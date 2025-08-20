@@ -1,4 +1,9 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using CarrerLink.Data;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<CarrerLinkContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("CarrerLinkContext") ?? throw new InvalidOperationException("Connection string 'CarrerLinkContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

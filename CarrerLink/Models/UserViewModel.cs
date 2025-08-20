@@ -4,10 +4,13 @@ namespace CarrerLink.Models
 {
     public class UserViewModel
     {
+        public int Id { get; set; }
         public string Name { get; set; }
 
         [DataType(DataType.EmailAddress)]
-        public string EmailName { get; set; }
+        public string Email { get; set; }
+
+        public string Mobile { get; set; }
 
         [DataType(DataType.Password)]
         [StringLength(20, MinimumLength = 6, ErrorMessage = "Password length must be between 6-20")]
@@ -17,7 +20,5 @@ namespace CarrerLink.Models
         [StringLength(20, MinimumLength = 6, ErrorMessage = "Password length must be between 6-20")]
         [Compare("Password", ErrorMessage = "Password doesn't match.")]
         public string ConfirmPassword { get; set; }
-
-        public string Mobile { get; set; }
     }
 }

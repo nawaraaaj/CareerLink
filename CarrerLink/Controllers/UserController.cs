@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using CarrerLink.Data;
+using CarrerLink.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using CarrerLink.Data;
-using CarrerLink.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
 
 namespace CarrerLink.Controllers
 {
@@ -23,6 +23,62 @@ namespace CarrerLink.Controllers
             _context = context;
         }
 
+        // GET: User
+        public async Task<IActionResult> Index()
+        {
+            return View(await _context.User.ToListAsync());
+        }
+
+        // GET: User/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _context.User
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
+
+        // GET: User/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: User/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Id,Name,Email,Password,Mobile,UserType")] User user)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(user);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(user);
+        }
+
+        // GET: User/Register
+        [AllowAnonymous]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        // POST: User/Register
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -30,7 +86,7 @@ namespace CarrerLink.Controllers
         {
             if (ModelState.IsValid)
             {
-                var userExist = (from u in _context.User where u.UserName == userViewModel.Email select u).ToList();
+                var userExist = (from u in _context.User where u.Email == userViewModel.Email select u).ToList();
                 if (userExist.Count() > 0)
                 {
                     ViewData["ErrorMessage"] = "User already exists.";
@@ -38,11 +94,11 @@ namespace CarrerLink.Controllers
                 else
                 {
                     User user = new User();
-                    user.Name = userViewModel.Name;
                     user.Email = userViewModel.Email;
                     user.Password = userViewModel.Password;
                     user.Mobile = userViewModel.Mobile;
-                   
+                    
+                   // user.UserType = "Normal";
                     _context.Add(user);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));// redirect to login 
@@ -67,14 +123,14 @@ namespace CarrerLink.Controllers
         {
             if (ModelState.IsValid)
             {
-                var userExist = (from u in _context.User where u.UserName == LoginViewModel.Email && u.Password == LoginViewModel.Password select u).ToList();
+                var userExist = (from u in _context.User where u.Email == LoginViewModel.Email && u.Password == LoginViewModel.Password select u).ToList();
                 if (userExist.Count() > 0)
                 {
                     List<Claim> claims = new List<Claim>();
                     Claim claim = new Claim(ClaimTypes.Email, LoginViewModel.Email);
-                    Claim claim1 = new Claim(ClaimTypes.Role, userExist[0].UserType);
+                    //Claim claim1 = new Claim(ClaimTypes.Role, userExist[0].UserType);
                     claims.Add(claim);
-                    claims.Add(claim1);
+                    //claims.Add(claim1);
                     ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     ClaimsPrincipal claimsPrincical = new ClaimsPrincipal(claimsIdentity);
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincical);
@@ -90,52 +146,6 @@ namespace CarrerLink.Controllers
         }
 
 
-        // GET: User
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.UserViewModel.ToListAsync());
-        }
-
-        // GET: User/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var userViewModel = await _context.UserViewModel
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (userViewModel == null)
-            {
-                return NotFound();
-            }
-
-            return View(userViewModel);
-        }
-
-        // GET: User/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: User/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Email,Mobile,Password,ConfirmPassword")] UserViewModel userViewModel)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(userViewModel);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(userViewModel);
-        }
-
         // GET: User/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -144,12 +154,12 @@ namespace CarrerLink.Controllers
                 return NotFound();
             }
 
-            var userViewModel = await _context.UserViewModel.FindAsync(id);
-            if (userViewModel == null)
+            var user = await _context.User.FindAsync(id);
+            if (user == null)
             {
                 return NotFound();
             }
-            return View(userViewModel);
+            return View(user);
         }
 
         // POST: User/Edit/5
@@ -157,9 +167,9 @@ namespace CarrerLink.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Email,Mobile,Password,ConfirmPassword")] UserViewModel userViewModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Email,Password,Mobile,UserType")] User user)
         {
-            if (id != userViewModel.Id)
+            if (id != user.Id)
             {
                 return NotFound();
             }
@@ -168,12 +178,12 @@ namespace CarrerLink.Controllers
             {
                 try
                 {
-                    _context.Update(userViewModel);
+                    _context.Update(user);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UserViewModelExists(userViewModel.Id))
+                    if (!UserExists(user.Id))
                     {
                         return NotFound();
                     }
@@ -184,7 +194,7 @@ namespace CarrerLink.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(userViewModel);
+            return View(user);
         }
 
         // GET: User/Delete/5
@@ -195,14 +205,14 @@ namespace CarrerLink.Controllers
                 return NotFound();
             }
 
-            var userViewModel = await _context.UserViewModel
+            var user = await _context.User
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (userViewModel == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return View(userViewModel);
+            return View(user);
         }
 
         // POST: User/Delete/5
@@ -210,19 +220,19 @@ namespace CarrerLink.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var userViewModel = await _context.UserViewModel.FindAsync(id);
-            if (userViewModel != null)
+            var user = await _context.User.FindAsync(id);
+            if (user != null)
             {
-                _context.UserViewModel.Remove(userViewModel);
+                _context.User.Remove(user);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UserViewModelExists(int id)
+        private bool UserExists(int id)
         {
-            return _context.UserViewModel.Any(e => e.Id == id);
+            return _context.User.Any(e => e.Id == id);
         }
     }
 }

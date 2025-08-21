@@ -10,19 +10,8 @@ namespace CarrerLink.Data
         {
         }
 
-        // Correct DbSets for your actual tables
-        public DbSet<User> Users { get; set; } = default!;
-        public DbSet<Applicant> Applicants { get; set; } = default!;
-        public DbSet<Recruiter> Recruiters { get; set; } = default!;
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-
-            // Optional: map to singular table names
-            modelBuilder.Entity<User>().ToTable("User");
-            modelBuilder.Entity<Applicant>().ToTable("Applicant");
-            modelBuilder.Entity<Recruiter>().ToTable("Recruiter");
-        }
+        public DbSet<User> User { get; set; } = default!; // must match how you access it
+        public DbSet<Applicant> Applicant { get; set; } = default!;
+        public DbSet<Recruiter> Recruiter { get; set; } = default!;
     }
 }

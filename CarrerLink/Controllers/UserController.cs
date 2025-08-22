@@ -71,9 +71,10 @@ namespace CarrerLink.Controllers
 
         // GET: User/Register
         [AllowAnonymous]
-        public IActionResult Register()
+        public IActionResult Register(string userType)
         {
-            return View();
+            ViewBag.UserType = userType;
+            return View(new UserViewModel());
         }
 
         // POST: User/Register
@@ -82,26 +83,31 @@ namespace CarrerLink.Controllers
         [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register([Bind("Name,Email,Mobile,Password,ConfirmPassword")] UserViewModel userViewModel)
+        public async Task<IActionResult> Register([Bind("Name,Email,Mobile,Password,ConfirmPassword")] UserViewModel userViewModel, string UserType)
         {
             if (ModelState.IsValid)
             {
                 var userExist = (from u in _context.User where u.Email == userViewModel.Email select u).ToList();
                 if (userExist.Count() > 0)
                 {
-                    ViewData["ErrorMessage"] = "User already exists.";
+                 ViewData["ErrorMessage"] = "User already exists.";
                 }
                 else
                 {
                     User user = new User();
+                    user.Name = userViewModel.Name;
                     user.Email = userViewModel.Email;
                     user.Password = userViewModel.Password;
                     user.Mobile = userViewModel.Mobile;
-                    
-                   // user.UserType = "Normal";
+                    user.UserType = UserType;
+
                     _context.Add(user);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));// redirect to login 
+
+                    if (UserType == "Applicant")
+                        return RedirectToAction("Create", "Applicant", new { userId = user.Id });
+                    else
+                        return RedirectToAction("Create", "Recruiter", new { userId = user.Id });
                 }
             }
             return View(userViewModel);

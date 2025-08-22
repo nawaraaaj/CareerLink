@@ -19,7 +19,7 @@ namespace CarrerLink.Models
         public string Education { get; set; }
         public string PortfolioUrl { get; set; }
 
-        // Navigation property (optional)
+       
         public virtual User User { get; set; }
     }
 }

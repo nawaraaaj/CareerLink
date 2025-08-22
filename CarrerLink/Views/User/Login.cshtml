@@ -25,6 +25,13 @@
             <div class="form-group">
                 <input type="submit" value="Login" class="btn btn-primary" />
             </div>
+
+            <div>
+                <p>Don't have an account?</p>
+                <a href="@Url.Action("Register", "User", new { userType = "Applicant" })">Register as Applicant</a> <br />
+                <a href="@Url.Action("Register", "User", new { userType = "Recruiter" })">Register as Recruiter</a>
+            </div>
+            
         </form>
     </div>
 </div>

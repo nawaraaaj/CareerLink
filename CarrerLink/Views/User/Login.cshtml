@@ -8,6 +8,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
+        <p class="text-danger">@ViewData["ErrorMessage"]</p>
         <form asp-action="Login">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             

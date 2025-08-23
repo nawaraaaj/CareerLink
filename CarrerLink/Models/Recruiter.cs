@@ -19,6 +19,6 @@ namespace CarrerLink.Models
         public string Industry { get; set; }
 
         // Navigation property (optional)
-        public virtual User User { get; set; }
+        public virtual User User { get; set; } = null!;
     }
 }

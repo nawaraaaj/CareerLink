@@ -6,12 +6,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<CarrerLinkContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("CarrerLinkContext") ?? throw new InvalidOperationException("Connection string 'CarrerLinkContext' not found.")));
 
+builder.Services
+    .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+        options.LoginPath = new PathString("/User/Login")
+    );
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => options.LoginPath = new PathString("/User/Login"));
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -27,7 +33,10 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
+
+
 
 app.MapControllerRoute(
     name: "default",

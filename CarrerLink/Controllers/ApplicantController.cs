@@ -48,7 +48,7 @@ namespace CarrerLink.Controllers
         // GET: Applicant/Create
         public IActionResult Create()
         {
-            ViewData["UserId"] = new SelectList(_context.User, "Id", "Id");
+            
             return View();
         }
 
@@ -57,17 +57,22 @@ namespace CarrerLink.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ApplicantId,UserId,ResumePath,Skills,ProfilePicturePath,Experience,Education,PortfolioUrl")] Applicant applicant)
+        public async Task<IActionResult> Create([Bind("ApplicantId,ResumePath,Skills,ProfilePicturePath,Experience,Education,PortfolioUrl")] Applicant applicant)
         {
-            if (ModelState.IsValid)
+            var userIdClaim = User.FindFirst("UserId");
+            applicant.UserId = int.Parse(userIdClaim.Value);
+
+            if(ModelState.IsValid)
             {
-                _context.Add(applicant);
+                _context.Applicant.Add(applicant);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Login", "User");
+                
+                
             }
-            ViewData["UserId"] = new SelectList(_context.User, "Id", "Id", applicant.UserId);
             return View(applicant);
         }
+        
 
         // GET: Applicant/Edit/5
         public async Task<IActionResult> Edit(int? id)

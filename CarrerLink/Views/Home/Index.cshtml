@@ -1,8 +1,26 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+
+ 
+    var userName = User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value ?? "Guest";
+    var userRole = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value ?? "No Role";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h2>Welcome, @userName!</h2>
+    <p>Your role: @userRole</p>
+
+    @if (User.IsInRole("Admin"))
+    {
+        <p>You have admin privileges.</p>
+    }
+    else if (User.IsInRole("Applicant"))
+    {
+        <p>You can apply for jobs.</p>
+    }
+    else if (User.IsInRole("Recruiter"))
+    {
+        <p>You can post jobs.</p>
+    }
+
 </div>

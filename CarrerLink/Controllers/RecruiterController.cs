@@ -63,7 +63,7 @@ namespace CarrerLink.Controllers
             {
                 _context.Add(recruiter);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Login", "User");
             }
             ViewData["UserId"] = new SelectList(_context.User, "Id", "Id", recruiter.UserId);
             return View(recruiter);

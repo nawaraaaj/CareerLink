@@ -11,6 +11,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
+        <p class="text-danger">@ViewData["ErrorMessage"]</p>
         <form asp-action="Register">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -21,21 +22,25 @@
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
+
             <div class="form-group">
             <label asp-for="Mobile" class="control-label"></label>
             <input asp-for="Mobile" class="form-control" />
             <span asp-validation-for="Mobile" class="text-danger"></span>
-    </div>
+            </div>
+
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
                 <input asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="ConfirmPassword" class="control-label"></label>
                 <input asp-for="ConfirmPassword" class="form-control" />
@@ -47,10 +52,6 @@
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

@@ -9,7 +9,7 @@
         public string Mobile { get; set; }
         public string UserType { get; set; } // "Applicant" or "Recruiter"
 
-        public virtual Applicant Applicant { get; set; }
-        public virtual Recruiter Recruiter { get; set; }
+        public virtual Applicant? Applicant { get; set; }
+        public virtual Recruiter? Recruiter { get; set; }
     }
 }

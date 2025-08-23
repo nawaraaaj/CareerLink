@@ -104,10 +104,20 @@ namespace CarrerLink.Controllers
                     _context.Add(user);
                     await _context.SaveChangesAsync();
 
+                    var claims = new List<Claim>
+                    {
+                         new Claim("UserId", user.Id.ToString()),
+                         new Claim("UserType", UserType),
+                         new Claim(ClaimTypes.Name, user.Name)
+                    };
+
+                    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
+
                     if (UserType == "Applicant")
-                        return RedirectToAction("Create", "Applicant", new { userId = user.Id });
+                        return RedirectToAction("Create", "Applicant");
                     else
-                        return RedirectToAction("Create", "Recruiter", new { userId = user.Id });
+                        return RedirectToAction("Create", "Recruiter");
                 }
             }
             return View(userViewModel);
@@ -134,14 +144,16 @@ namespace CarrerLink.Controllers
                 {
                     List<Claim> claims = new List<Claim>();
                     Claim claim = new Claim(ClaimTypes.Email, LoginViewModel.Email);
-                    //Claim claim1 = new Claim(ClaimTypes.Role, userExist[0].UserType);
+                    Claim claim1 = new Claim(ClaimTypes.Role, userExist[0].UserType);
+                    Claim claim2 = new Claim(ClaimTypes.Name, userExist[0].Name);
                     claims.Add(claim);
-                    //claims.Add(claim1);
+                    claims.Add(claim1);
+                    claims.Add(claim2);
                     ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     ClaimsPrincipal claimsPrincical = new ClaimsPrincipal(claimsIdentity);
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincical);
 
-                    return RedirectToAction("ProductDashboard", "Product");
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
@@ -151,6 +163,12 @@ namespace CarrerLink.Controllers
             return View(LoginViewModel);
         }
 
+        //Logout
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login", "User");
+        }
 
         // GET: User/Edit/5
         public async Task<IActionResult> Edit(int? id)

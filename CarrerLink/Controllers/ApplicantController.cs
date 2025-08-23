@@ -55,24 +55,38 @@ namespace CarrerLink.Controllers
         // POST: Applicant/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Applicant/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ApplicantId,ResumePath,Skills,ProfilePicturePath,Experience,Education,PortfolioUrl")] Applicant applicant)
+        public async Task<IActionResult> Create(string Skills, string Experience, string Education, string ResumePath, string PortfolioUrl)
         {
-            var userIdClaim = User.FindFirst("UserId");
-            applicant.UserId = int.Parse(userIdClaim.Value);
-
-            if(ModelState.IsValid)
+            try
             {
+                var userId = int.Parse(User.FindFirst("UserId").Value);
+
+                var applicant = new Applicant
+                {
+                    UserId = userId,
+                    Skills = Skills,
+                    Experience = Experience,
+                    Education = Education,
+                    PortfolioUrl = PortfolioUrl,
+                    ResumePath = ResumePath
+                    
+                };
+
                 _context.Applicant.Add(applicant);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Login", "User");
-                
-                
+
+                return RedirectToAction("Index", "Home");
             }
-            return View(applicant);
+            catch (Exception ex)
+            {
+                // Check the exception details
+                ViewBag.Error = ex.Message;
+                return View();
+            }
         }
-        
+
 
         // GET: Applicant/Edit/5
         public async Task<IActionResult> Edit(int? id)

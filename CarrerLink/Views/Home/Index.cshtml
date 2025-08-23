@@ -1,14 +1,16 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 
- 
+
     var userName = User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value ?? "Guest";
     var userRole = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value ?? "No Role";
+    var userid = User.FindFirst("UserId")?.Value ?? "No UserId";
 }
 
 <div class="text-center">
     <h2>Welcome, @userName!</h2>
     <p>Your role: @userRole</p>
+    <p>Your UserId: @userid</p>
 
     @if (User.IsInRole("Admin"))
     {

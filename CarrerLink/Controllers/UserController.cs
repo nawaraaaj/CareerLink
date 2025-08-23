@@ -146,9 +146,11 @@ namespace CarrerLink.Controllers
                     Claim claim = new Claim(ClaimTypes.Email, LoginViewModel.Email);
                     Claim claim1 = new Claim(ClaimTypes.Role, userExist[0].UserType);
                     Claim claim2 = new Claim(ClaimTypes.Name, userExist[0].Name);
+                    Claim claim3 = new Claim("UserId", userExist[0].Id.ToString());
                     claims.Add(claim);
                     claims.Add(claim1);
                     claims.Add(claim2);
+                    claims.Add(claim3);
                     ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     ClaimsPrincipal claimsPrincical = new ClaimsPrincipal(claimsIdentity);
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincical);

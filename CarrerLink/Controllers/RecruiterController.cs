@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using CarrerLink.Data;
+using CarrerLink.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using CarrerLink.Data;
-using CarrerLink.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace CarrerLink.Controllers
 {
@@ -48,7 +49,7 @@ namespace CarrerLink.Controllers
         // GET: Recruiter/Create
         public IActionResult Create()
         {
-            ViewData["UserId"] = new SelectList(_context.User, "Id", "Id");
+            
             return View();
         }
 
@@ -57,16 +58,34 @@ namespace CarrerLink.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RecruiterId,UserId,CompanyName,CompanyWebsite,CompanyDescription,Location,Industry")] Recruiter recruiter)
+        public async Task<IActionResult> Create(string CompanyName, string CompanyWebsite, string CompanyDescription, string Location, string Industry)
         {
-            if (ModelState.IsValid)
+
+            try
             {
-                _context.Add(recruiter);
+                var userId = int.Parse(User.FindFirst("UserId").Value);
+
+                var recruiter = new Recruiter
+                {
+                    UserId = userId,
+                    CompanyName = CompanyName,
+                    CompanyWebsite = CompanyWebsite,
+                    CompanyDescription = CompanyDescription,
+                    Location = Location,
+                    Industry = Industry
+                };
+
+                _context.Recruiter.Add(recruiter);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Login", "User");
+
+                return RedirectToAction("Index", "Home");
             }
-            ViewData["UserId"] = new SelectList(_context.User, "Id", "Id", recruiter.UserId);
-            return View(recruiter);
+            catch (Exception ex)
+            {
+                // Check the exception details
+                ViewBag.Error = ex.Message;
+                return View();
+            }
         }
 
         // GET: Recruiter/Edit/5

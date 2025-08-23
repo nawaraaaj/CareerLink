@@ -107,7 +107,7 @@ namespace CarrerLink.Controllers
                     var claims = new List<Claim>
                     {
                          new Claim("UserId", user.Id.ToString()),
-                         new Claim("UserType", UserType),
+                         new Claim(ClaimTypes.Role, UserType),
                          new Claim(ClaimTypes.Name, user.Name)
                     };
 

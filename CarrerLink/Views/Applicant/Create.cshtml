@@ -10,39 +10,50 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
-            <div class="form-group">
-                <label asp-for="ResumePath" class="control-label"></label>
-                <input asp-for="ResumePath" class="form-control" />
-                <span asp-validation-for="ResumePath" class="text-danger"></span>
+        @if (ViewBag.Error != null)
+        {
+            <div style="color:red; font-weight:bold;">
+                @ViewBag.Error
             </div>
+        }
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            @if (ViewBag.Error != null)
+            {
+                <div style="color:red; font-weight:bold;">
+                    @ViewBag.Error
+                </div>
+            }
+
             <div class="form-group">
-                <label asp-for="Skills" class="control-label"></label>
-                <input asp-for="Skills" class="form-control" />
-                <span asp-validation-for="Skills" class="text-danger"></span>
+                <label>Resume: only pdf </label>
+                <input type="file" name="Resume" class="form-control"  />
             </div>
+
             <div class="form-group">
-                <label asp-for="ProfilePicturePath" class="control-label"></label>
-                <input asp-for="ProfilePicturePath" class="form-control" />
-                <span asp-validation-for="ProfilePicturePath" class="text-danger"></span>
+                <label>Profile Picture</label>
+                <input type="file" name="Profile" class="form-control" />
             </div>
+
             <div class="form-group">
-                <label asp-for="Experience" class="control-label"></label>
-                <input asp-for="Experience" class="form-control" />
-                <span asp-validation-for="Experience" class="text-danger"></span>
+                <label>Skills</label>
+                <input type="text" name="Skills" value="@ViewBag.Skills" class="form-control" />
             </div>
+
             <div class="form-group">
-                <label asp-for="Education" class="control-label"></label>
-                <input asp-for="Education" class="form-control" />
-                <span asp-validation-for="Education" class="text-danger"></span>
+                <label>Experience</label>
+                <input type="text" name="Experience" value="@ViewBag.Experience" class="form-control" />
             </div>
+
             <div class="form-group">
-                <label asp-for="PortfolioUrl" class="control-label"></label>
-                <input asp-for="PortfolioUrl" class="form-control" />
-                <span asp-validation-for="PortfolioUrl" class="text-danger"></span>
+                <label>Education</label>
+                <input type="text" name="Education" value="@ViewBag.Education" class="form-control" />
             </div>
+
+            <div class="form-group">
+                <label>Portfolio URL</label>
+                <input type="text" name="PortfolioUrl" value="@ViewBag.PortfolioUrl" class="form-control" />
+            </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

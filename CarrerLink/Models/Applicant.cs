@@ -14,7 +14,7 @@ namespace CarrerLink.Models
 
         public string ResumePath { get; set; }
         public string Skills { get; set; }
-        public string ProfilePicturePath { get; set; }
+        public string? ProfilePicturePath { get; set; }
         public string Experience { get; set; }
         public string Education { get; set; }
         public string PortfolioUrl { get; set; }

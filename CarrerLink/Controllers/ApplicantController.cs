@@ -57,11 +57,48 @@ namespace CarrerLink.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         // POST: Applicant/Create
         [HttpPost]
-        public async Task<IActionResult> Create(string Skills, string Experience, string Education, string ResumePath, string PortfolioUrl)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(string Skills, string Experience, string Education, string PortfolioUrl, IFormFile Resume, IFormFile Profile)
         {
             try
             {
                 var userId = int.Parse(User.FindFirst("UserId").Value);
+                var userName = User.FindFirst("Name")?.Value ?? "Applicant";
+
+                string resumeDbPath = null;       
+                string profilePicDbPath = null;   
+
+                //Resume Upload
+                if (Resume != null && Resume.Length > 0)
+                {
+                    var resumeFileName = $"{userName}_{userId}.pdf";  
+                    var resumeFullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Resume", resumeFileName);
+
+                    using (var stream = new FileStream(resumeFullPath, FileMode.Create))
+                    {
+                        await Resume.CopyToAsync(stream);
+                    }
+
+                    resumeDbPath = "/Resume/" + resumeFileName; 
+                }
+
+                //Profile Picture Upload
+                if (Profile != null && Profile.Length > 0)
+                {
+                    var ext = Path.GetExtension(Profile.FileName).ToLower();
+                    var profileFileName = $"{userName}_{userId}{ext}";
+                    var profileFullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/ProfilePicture", profileFileName);
+
+                    using (var stream = new FileStream(profileFullPath, FileMode.Create))
+                    {
+                        await Profile.CopyToAsync(stream);
+                    }
+
+                    profilePicDbPath = "/ProfilePicture/" + profileFileName; 
+                }
+
+
+
 
                 var applicant = new Applicant
                 {
@@ -70,8 +107,8 @@ namespace CarrerLink.Controllers
                     Experience = Experience,
                     Education = Education,
                     PortfolioUrl = PortfolioUrl,
-                    ResumePath = ResumePath
-                    
+                    ResumePath = resumeDbPath,
+                    ProfilePicturePath = profilePicDbPath
                 };
 
                 _context.Applicant.Add(applicant);
@@ -81,11 +118,19 @@ namespace CarrerLink.Controllers
             }
             catch (Exception ex)
             {
-                // Check the exception details
-                ViewBag.Error = ex.Message;
+                string errorMessage = ex.Message;
+
+                var inner = ex.InnerException;
+                while (inner != null)
+                {
+                    errorMessage += " | Inner Exception: " + inner.Message;
+                    inner = inner.InnerException;
+                }
+                ViewBag.Error = errorMessage;
                 return View();
             }
         }
+
 
 
         // GET: Applicant/Edit/5

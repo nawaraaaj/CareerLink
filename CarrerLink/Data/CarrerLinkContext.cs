@@ -24,7 +24,7 @@ namespace CarrerLink.Data
                 {
                     Id = 1,
                     Name = "Admin",
-                    Email = "admin@gmail.com",
+                    Email = "admin@carrerlink.com",
                     Password = "admin123",
                     Mobile = "9800000000",
                     UserType = "Admin"

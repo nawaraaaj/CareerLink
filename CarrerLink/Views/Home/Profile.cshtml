@@ -1,0 +1,29 @@
+﻿@model CarrerLink.Models.ProfileViewModel;
+
+<h2>@Model.User.Name</h2>
+<p>Email: @Model.User.Email</p>
+<p>Mobile: @Model.User.Mobile</p>
+
+@if (Model.Applicant != null)
+{
+    <h3>Applicant Details</h3>
+    @if (!string.IsNullOrEmpty(Model.Applicant.ProfilePicturePath))
+    {
+        <img src="@Model.Applicant.ProfilePicturePath" alt="Profile Picture" width="150" height="150" />
+    }
+    <p>Skills: @Model.Applicant.Skills</p>
+   // <p>Resume: @Model.Applicant.ResumePath</p>
+    <p>Experience: @Model.Applicant.Experience</p>
+    <p>Education: @Model.Applicant.Education</p>
+    <p>Portfolio: <a href="@Model.Applicant.PortfolioUrl" target="_blank">@Model.Applicant.PortfolioUrl</a></p>
+}
+
+@if (Model.Recruiter != null)
+{
+    <h3>Recruiter Details</h3>
+    <p>Company Name: @Model.Recruiter.CompanyName</p>
+    <p>Website: <a href="@Model.Recruiter.CompanyWebsite" target="_blank">@Model.Recruiter.CompanyWebsite</a></p>
+    <p>Description: @Model.Recruiter.CompanyDescription</p>
+    <p>Location: @Model.Recruiter.Location</p>
+    <p>Industry: @Model.Recruiter.Industry</p>
+}

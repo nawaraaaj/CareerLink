@@ -26,10 +26,13 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Manage Users</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Applicant" asp-action="Index">Manage Applicant</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Applicant" asp-action="Index">Manage Applicants</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Recruiter" asp-action="Index">Manage Recruiter</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Recruiter" asp-action="Index">Manage Recruiters</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Job" asp-action="Index">Manage Jobs</a>
                             </li>
                         }
 
@@ -39,6 +42,17 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Recruiter"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Job" asp-action="Create">Post Job</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Job" asp-action="Index">Manage Jobs</a>
+                            </li>
+                        }
+
                     </ul>
                 </div>
                 @if (User.Identity.IsAuthenticated)
@@ -49,8 +63,7 @@
                 }
                 else
                 {
-                    <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Register">Register</a>
-                    <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">Login</a>
+                    <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">Register  Login</a>
                 }
 
             </div>

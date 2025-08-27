@@ -110,8 +110,9 @@ namespace CarrerLink.Controllers
                          new Claim(ClaimTypes.Role, UserType),
                          new Claim(ClaimTypes.Name, user.Name)
                     };
-
+                   
                     var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
 
                     if (UserType == "Applicant")
@@ -151,6 +152,22 @@ namespace CarrerLink.Controllers
                     claims.Add(claim1);
                     claims.Add(claim2);
                     claims.Add(claim3);
+
+
+                    // 3.If user is a recruiter, add RecruiterId claim
+                    var user = userExist[0];
+                    if (user.UserType == "Recruiter")
+                    {
+                        var recruiter = await _context.Recruiter
+                            .FirstOrDefaultAsync(r => r.UserId == user.Id);
+
+                        if (recruiter != null)
+                        {
+                            claims.Add(new Claim("RecruiterId", recruiter.RecruiterId.ToString()));
+                        }
+                    }
+
+
                     ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     ClaimsPrincipal claimsPrincical = new ClaimsPrincipal(claimsIdentity);
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincical);

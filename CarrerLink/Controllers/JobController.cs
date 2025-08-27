@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CarrerLink.Data;
 using CarrerLink.Models;
+using System.Security.Claims;
+
 
 namespace CarrerLink.Controllers
 {
@@ -48,7 +50,6 @@ namespace CarrerLink.Controllers
         // GET: Job/Create
         public IActionResult Create()
         {
-            ViewData["RecruiterId"] = new SelectList(_context.Recruiter, "RecruiterId", "RecruiterId");
             return View();
         }
 
@@ -57,16 +58,19 @@ namespace CarrerLink.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("JobId,Title,Description,Location,JobType,Salary,PostedDate,ApplicationDeadline,RecruiterId")] Job job)
+        public async Task<IActionResult> Create(Job job)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(job);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["RecruiterId"] = new SelectList(_context.Recruiter, "RecruiterId", "RecruiterId", job.RecruiterId);
-            return View(job);
+            if (!ModelState.IsValid) return View(job);
+
+            var recruiterIdClaim = User.FindFirst("RecruiterId")?.Value;
+            if (recruiterIdClaim == null) return Forbid();
+
+            job.RecruiterId = int.Parse(recruiterIdClaim);
+            job.PostedDate = DateTime.UtcNow;
+
+            _context.Job.Add(job);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Job/Edit/5

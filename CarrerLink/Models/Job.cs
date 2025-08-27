@@ -8,10 +8,10 @@
         public string Location { get; set; }
         public string JobType { get; set; }  
         public int Salary { get; set; }  
-        public DateTime PostedDate { get; set; }
+        public DateTime PostedDate { get; set; } = DateTime.Now;
         public DateTime ApplicationDeadline { get; set; }
 
         public int RecruiterId { get; set; }  // Linked to Recruiter
-        public Recruiter Recruiter { get; set; }  // Navigation Property
+        public virtual Recruiter Recruiter { get; set; }  // Navigation Property
     }
 }

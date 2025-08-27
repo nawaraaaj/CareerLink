@@ -14,6 +14,8 @@ namespace CarrerLink.Data
         public DbSet<Applicant> Applicant { get; set; } = default!;
         public DbSet<Recruiter> Recruiter { get; set; } = default!;
 
+        public DbSet<Job> Job { get; set; } = default!;
+      
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

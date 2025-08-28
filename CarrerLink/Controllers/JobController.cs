@@ -60,13 +60,22 @@ namespace CarrerLink.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Job job)
         {
-            if (!ModelState.IsValid) return View(job);
+            // Remove validation errors for navigation properties
+            ModelState.Remove("Recruiter");
+
+            if (!ModelState.IsValid)
+            {
+                return View(job);
+            }
 
             var recruiterIdClaim = User.FindFirst("RecruiterId")?.Value;
-            if (recruiterIdClaim == null) return Forbid();
+            if (recruiterIdClaim == null)
+                return Forbid();
 
             job.RecruiterId = int.Parse(recruiterIdClaim);
-            job.PostedDate = DateTime.UtcNow;
+            job.PostedDate = DateTime.Now;
+
+            job.ApplicationDeadline = new DateTime(job.ApplicationDeadline.Year, job.ApplicationDeadline.Month, job.ApplicationDeadline.Day, 23, 59, 59);
 
             _context.Job.Add(job);
             await _context.SaveChangesAsync();

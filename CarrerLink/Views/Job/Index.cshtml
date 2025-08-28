@@ -1,7 +1,9 @@
-﻿@model IEnumerable<CarrerLink.Models.Job>
+﻿@using System.Security.Claims;
+@model IEnumerable<CarrerLink.Models.Job>
 
 @{
     ViewData["Title"] = "Index";
+    var recruiterName = User.FindFirst(ClaimTypes.Name)?.Value;
 }
 
 <h1>Index</h1>
@@ -63,9 +65,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.ApplicationDeadline)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Recruiter.RecruiterId)
-            </td>
+            
+                <td>@recruiterName</td>
+
             <td>
                 <a asp-action="Edit" asp-route-id="@item.JobId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.JobId">Details</a> |

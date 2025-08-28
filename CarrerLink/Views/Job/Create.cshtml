@@ -1,52 +1,63 @@
 ﻿@model CarrerLink.Models.Job
-
 @{
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Create Job</h1>
 
-<h4>Job</h4>
-<hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create" method="post">
-            @Html.AntiForgeryToken()
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Location" class="control-label"></label>
                 <input asp-for="Location" class="form-control" />
                 <span asp-validation-for="Location" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="JobType" class="control-label"></label>
-                <input asp-for="JobType" class="form-control" />
+                <select asp-for="JobType" class="form-control">
+                    <option value="">-- Select Job Type --</option>
+                    <option value="Full-time">Full-time</option>
+                    <option value="Part-time">Part-time</option>
+                    <option value="Contract">Contract</option>
+                    <option value="Temporary">Temporary</option>
+                    <option value="Internship">Internship</option>
+                    <option value="Remote">Remote</option>
+                    <option value="Hybrid">Hybrid</option>
+                    <option value="Freelance">Freelance</option>
+                </select>
                 <span asp-validation-for="JobType" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Salary" class="control-label"></label>
-                <input asp-for="Salary" class="form-control" />
+                <input asp-for="Salary" class="form-control" type="number" min="0" />
                 <span asp-validation-for="Salary" class="text-danger"></span>
             </div>
-           
+
             <div class="form-group">
                 <label asp-for="ApplicationDeadline" class="control-label"></label>
-                <input asp-for="ApplicationDeadline" class="form-control" />
+                <input asp-for="ApplicationDeadline" class="form-control" type="date" />
                 <span asp-validation-for="ApplicationDeadline" class="text-danger"></span>
             </div>
-            
+
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create Job" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -57,5 +68,12 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        document.querySelector('form').addEventListener('submit', function(e) {
+            console.log('Form submitting...');
+        });
+    </script>
 }

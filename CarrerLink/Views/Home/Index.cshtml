@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<CarrerLink.Models.Job>
+
+@{
     ViewData["Title"] = "Home Page";
 
 
@@ -24,5 +26,54 @@
     {
         <p>You can post jobs.</p>
     }
+</div>
+<h2 class="mb-3">Latest Jobs</h2>
 
+<div class="row">
+    @foreach (var job in Model)
+    {
+        <div class="col-md-3 mb-4">
+            <div class="card shadow-sm border-0 rounded-3 h-100">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title fw-bold">@job.Title</h5>
+                    <h6 class="card-subtitle text-muted mb-2">@job.Recruiter?.User?.Name</h6>
+
+                    <p class="mb-1">
+                        <i class="bi bi-geo-alt"></i> @job.Location
+                        <span class="badge bg-primary ms-2">@job.JobType</span>
+                    </p>
+
+                    <p class="text-muted mb-1">
+                        <i class="bi bi-clock"></i>
+                        @job.PostedDate.ToString("MMM dd, yyyy")
+                    </p>
+
+                    @{
+                        var remainingDays = (job.ApplicationDeadline - DateTime.Now).Days;
+                    }
+                    <p class="text-muted mb-1">
+                        @if (remainingDays > 0)
+                        {
+                            @($"{remainingDays} days left")
+                        }
+                        else
+                        {
+                            @( "Deadline passed")
+                        }
+                    </p>
+
+                    @if (job.Salary > 0)
+                    {
+                        <p class="text-success fw-semibold">NRs. @job.Salary.ToString("N0")</p>
+                    }
+
+                    <div class="mt-auto">
+                        <a asp-action="Details" asp-route-id="@job.JobId" class="btn btn-sm btn-outline-primary w-80">
+                            View Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 </div>

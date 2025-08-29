@@ -1,21 +1,30 @@
 using System.Diagnostics;
 using CarrerLink.Models;
+using CarrerLink.Data;  
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarrerLink.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly CarrerLinkContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, CarrerLinkContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var jobs = await _context.Job
+                                     .Include(j => j.Recruiter)
+                                         .ThenInclude(r => r.User)
+                                     .ToListAsync();
+
+            return View(jobs);  
         }
 
         public IActionResult Privacy()

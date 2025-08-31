@@ -68,7 +68,8 @@
                     }
 
                     <div class="mt-auto">
-                        <a asp-action="Details" asp-route-id="@job.JobId" class="btn btn-sm btn-outline-primary w-80">
+                        <a asp-controller="Job" asp-action="Details" asp-route-id="@job.JobId"
+                           class="btn btn-sm btn-outline-primary w-80">
                             View Details
                         </a>
                     </div>

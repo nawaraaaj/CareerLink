@@ -1,80 +1,90 @@
-﻿@model IEnumerable<CarrerLink.Models.Job>
+﻿
+@model IEnumerable<CarrerLink.Models.Job>
 
 @{
     ViewData["Title"] = "Home Page";
 
-
     var userName = User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value ?? "Guest";
     var userRole = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value ?? "No Role";
-    var userid = User.FindFirst("UserId")?.Value ?? "No UserId";
+    var userId = User.FindFirst("UserId")?.Value ?? "No UserId";
 }
 
-<div class="text-center">
-    <h2>Welcome, @userName!</h2>
-    <p>Your role: @userRole</p>
-    <p>Your UserId: @userid</p>
+<div class="container mt-4">
+    <div class="text-center mb-4">
+        <h2>Welcome, @userName!</h2>
+        <p>Your role: <strong>@userRole</strong></p>
 
-    @if (User.IsInRole("Admin"))
-    {
-        <p>You have admin privileges.</p>
-    }
-    else if (User.IsInRole("Applicant"))
-    {
-        <p>You can apply for jobs.</p>
-    }
-    else if (User.IsInRole("Recruiter"))
-    {
-        <p>You can post jobs.</p>
-    }
-</div>
-<h2 class="mb-3">Latest Jobs</h2>
+        @if (User.IsInRole("Admin"))
+        {
+            <p class="text-danger">You have admin privileges.</p>
+        }
+        else if (User.IsInRole("Applicant"))
+        {
+            <p class="text-primary">You can apply for jobs.</p>
+        }
+        else if (User.IsInRole("Recruiter"))
+        {
+            <p class="text-success">You can post jobs.</p>
+        }
+    </div>
+    <div class="container mt-4">
+        <h2 class="text-center mb-4">Find Your Next Job</h2>
 
-<div class="row">
-    @foreach (var job in Model)
-    {
-        <div class="col-md-3 mb-4">
-            <div class="card shadow-sm border-0 rounded-3 h-100">
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title fw-bold">@job.Title</h5>
-                    <h6 class="card-subtitle text-muted mb-2">@job.Recruiter?.User?.Name</h6>
-
-                    <p class="mb-1">
-                        <i class="bi bi-geo-alt"></i> @job.Location
-                        <span class="badge bg-primary ms-2">@job.JobType</span>
-                    </p>
-
-                    <p class="text-muted mb-1">
-                        <i class="bi bi-clock"></i>
-                        @job.PostedDate.ToString("MMM dd, yyyy")
-                    </p>
-
-                    @{
-                        var remainingDays = (job.ApplicationDeadline - DateTime.Now).Days;
-                    }
-                    <p class="text-muted mb-1">
-                        @if (remainingDays > 0)
-                        {
-                            @($"{remainingDays} days left")
-                        }
-                        else
-                        {
-                            @( "Deadline passed")
-                        }
-                    </p>
-
-                    @if (job.Salary > 0)
-                    {
-                        <p class="text-success fw-semibold">NRs. @job.Salary.ToString("N0")</p>
-                    }
-
-                    <div class="mt-auto">
-                        <a asp-controller="Job" asp-action="Details" asp-route-id="@job.JobId"
-                           class="btn btn-sm btn-outline-primary w-80">
-                            View Details
-                        </a>
-                    </div>
-                </div>
+        <!-- Search Form -->
+        <form asp-controller="Home" asp-action="Index" method="get" class="row g-2 justify-content-center mb-4">
+            <div class="col-md-4">
+                <input type="text" name="keyword" class="form-control"
+                       placeholder="Search by title, company, or location"
+                       value="@Context.Request.Query["keyword"]" />
             </div>
-        </div>
-    }
+
+            <div class="col-md-3">
+                <select name="jobType" class="form-select">
+                    <option value="">All Job Types</option>
+                    @if (ViewBag.JobTypes != null)
+                    {
+                        foreach (var type in ViewBag.JobTypes as List<string>)
+                        {
+                            <option value="@type" selected="@(type == Context.Request.Query["jobType"])">@type</option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">Search</button>
+            </div>
+        </form>
+
+        <!-- Job List -->
+        @if (Model.Any())
+        {
+            <div class="row">
+                @foreach (var job in Model)
+                {
+                    @await Html.PartialAsync("_JobCard", job)
+                }
+            </div>
+        }
+        else
+        {
+            <div class="text-center text-muted mt-4">
+                <i class="bi bi-search fs-1"></i>
+                <p class="mt-2">No jobs found matching your search criteria.</p>
+            </div>
+        }
+    </div>
+    
+
+    <!-- Pagination placeholder -->
+    <nav aria-label="Job pagination">
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled"><a class="page-link">Previous</a></li>
+            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+    </nav>
 </div>
+
+    

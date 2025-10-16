@@ -18,7 +18,7 @@ namespace CarrerLink.Controllers
         }
 
         // GET: query string
-        public async Task<IActionResult> Index(string keyword, string jobType)
+        public async Task<IActionResult> Index(string keyword, string jobType, int page = 1, int pageSize = 8)
         {
             
             var jobs = _context.Job
@@ -49,12 +49,15 @@ namespace CarrerLink.Controllers
                                          .OrderBy(jt => jt)
                                          .ToListAsync();
 
-            ViewBag.JobTypes = jobTypes;
-
-            // sorting descending
+            int totalJobs = await jobs.CountAsync();
             var jobList = await jobs
-                                .OrderByDescending(j => j.PostedDate)
-                                .ToListAsync();
+                            .OrderByDescending(j => j.PostedDate)
+                            .Skip((page - 1) * pageSize)
+                            .Take(pageSize)
+                            .ToListAsync();
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = (int)Math.Ceiling(totalJobs / (double)pageSize);
 
             return View(jobList);
         }

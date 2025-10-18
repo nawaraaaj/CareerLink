@@ -50,9 +50,14 @@
 
                 @if (User.IsInRole("Applicant"))
                 {
-                    <a asp-controller="Application" asp-action="Apply" asp-route-id="@Model.JobId"
-                       class="btn btn-sm btn-success w-100">Apply Now</a>
-                }
+                    <form asp-controller="Application" asp-action="Apply" method="post">
+                        <input type="hidden" name="jobId" value="@Model.JobId" />
+                        <button type="submit" class="btn btn-sm btn-success w-100">Apply Now</button>
+                    </form>
+
+                }     
+
+
                 else if (User.IsInRole("Recruiter") &&
                 Model.Recruiter?.UserId == int.Parse(User.FindFirst("UserId")?.Value ?? "0"))
                 {
@@ -68,13 +73,4 @@
     </div>
 </div>
 
-<style>
-    .job-card {
-        transition: all 0.2s ease-in-out;
-    }
 
-        .job-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-</style>

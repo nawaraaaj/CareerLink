@@ -10,12 +10,13 @@ namespace CarrerLink.Data
         {
         }
 
-        public DbSet<User> User { get; set; } = default!; // must match how you access it
+        public DbSet<User> User { get; set; } = default!; 
         public DbSet<Applicant> Applicant { get; set; } = default!;
         public DbSet<Recruiter> Recruiter { get; set; } = default!;
-
         public DbSet<Job> Job { get; set; } = default!;
-      
+        public DbSet<Application> Application { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

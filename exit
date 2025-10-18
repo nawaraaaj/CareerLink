@@ -1,0 +1,131 @@
+[33mcommit 2db5b14c1093544d0902632f1a0f9989e924d703[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Nawaraj Neupane <nawarajneupane2003@gmail.com>
+Date:   Thu Oct 16 20:10:27 2025 +0545
+
+    Pagination works
+
+[33mcommit f099977cb74e1574094abd0c8ebfee5efbc07154[m
+Author: Nawaraj Neupane <nawarajneupane2003@gmail.com>
+Date:   Thu Oct 16 19:53:25 2025 +0545
+
+    JobSearch works
+
+[33mcommit e22b9225083d03263ebe6f0001a87235dc2dcf25[m
+Author: Nawaraj Neupane <nawarajneupane2003@gmail.com>
+Date:   Sun Aug 31 18:44:22 2025 +0545
+
+    Job details works
+
+[33mcommit 04691701fe7d588eaec6838ac5544eeac64bebdf[m
+Author: Nawaraj Neupane <nawarajneupane2003@gmail.com>
+Date:   Fri Aug 29 15:25:38 2025 +0545
+
+    Job card
+
+[33mcommit 3c88eb7b4287e00f817e22f4cb7f85818949a9b0[m
+Author: Nawaraj Neupane <nawarajneupane2003@gmail.com>
+Date:   Fri Aug 29 14:37:30 2025 +0545
+
+    Commit
+
+[33mcommit 4c6d8d4e0c15c2e8f607560da5129b6bdece17c3[m
+Author: Nawaraj Neupane <nawarajneupane2003@gmail.com>
+Date:   Thu Aug 28 21:23:32 2025 +0545
+
+    Posting job works
+
+[33mcommit 1dc2fd61700352ef94343a369439e30fb13402e7[m
+Author: Nawaraj Neupane <nawarajneupane2003@gmail.com>
+Date:   Wed Aug 27 18:29:42 2025 +0545
+
+    Posting job not working as of now
+
+[33mcommit eac3fb6274477ebd5e03fcbe567b97f5e684f263[m
+Author: Nawaraj Neupane <nawarajneupane2003@gmail.com>
+Date:   Wed Aug 27 17:09:52 2025 +0545
+
+    Working on Job
+
+[33mcommit 89b78c31fa19eaf2cec8e650f56953d18c27f568[m
+Author: Nawaraj Neupane <nawarajneupane2003@gmail.com>
+Date:   Tue Aug 26 09:50:03 2025 +0545
+
+    Job Model
+
+[33mcommit f02196e51f444a155b8a57b8f10149327babfb6d[m
+Author: Nawaraj Neupane <nawarajneupane2003@gmail.com>
+Date:   Mon Aug 25 21:15:13 2025 +0545
+
+    Profile details bug fixed
+
+[33mcommit 022ed49286d3e32843dbef119242ed651031a211[m
+Author: Nawaraj Neupane <nawarajneupane2003@gmail.com>
+Date:   Mon Aug 25 21:01:33 2025 +0545
+
+    Profile Details Bug
+
+[33mcommit bedac9c9dc40636525c38d96f600536481a620ca[m
+Author: Nawaraj Neupane <nawarajneupane2003@gmail.com>
+Date:   Sun Aug 24 18:07:54 2025 +0545
+
+    Just a commit
+
+[33mcommit ed18aff81b69b45eedf3ab02417a05afcce8d98a[m
+Author: Nawaraj Neupane <nawarajneupane2003@gmail.com>
+Date:   Sun Aug 24 18:01:23 2025 +0545
+
+    File upload works
+
+[33mcommit 686a86bf82e71d70e406e2a529029a7045d017a8[m
+Author: Nawaraj Neupane <nawarajneupane2003@gmail.com>
+Date:   Sat Aug 23 22:10:18 2025 +0545
+
+    Applicant & Recruiter Registration & Login Works
+
+[33mcommit dae24b98306d0147d71dda41bd6e8ec9e0cb3e93[m
+Author: Nawaraj Neupane <nawarajneupane2003@gmail.com>
+Date:   Sat Aug 23 20:32:24 2025 +0545
+
+    Applicant Registration Works
+
+[33mcommit fd918c02d417821b1d18f07777b9aaa4c8a89a0a[m
+Author: Nawaraj Neupane <nawarajneupane2003@gmail.com>
+Date:   Sat Aug 23 14:38:17 2025 +0545
+
+    Admin Role Works
+
+[33mcommit 337c397edfa321bba09a49e39b882d29adbd8029[m
+Author: Nawaraj Neupane <nawarajneupane2003@gmail.com>
+Date:   Fri Aug 22 19:01:28 2025 +0545
+
+    Registration
+
+[33mcommit 6a0c8769a406a686eaf678107bece4301d69463d[m
+Author: Nawaraj Neupane <nawarajneupane2003@gmail.com>
+Date:   Fri Aug 22 17:26:15 2025 +0545
+
+    Register AS
+
+[33mcommit b26b320ea9890ac1c48ff4e54d3982fc38e675c8[m
+Author: Nawaraj Neupane <nawarajneupane2003@gmail.com>
+Date:   Thu Aug 21 20:37:29 2025 +0545
+
+    Just few updates
+
+[33mcommit af42e3e35b59c32d7c7da4ad6eff6d255f453ba5[m
+Author: Nawaraj Neupane <nawarajneupane2003@gmail.com>
+Date:   Wed Aug 20 15:59:40 2025 +0545
+
+    Another Day, Another Commit
+
+[33mcommit 4378534a0c40a55d191758d25695c5d938118146[m
+Author: Nawaraj Neupane <nawarajneupane2003@gmail.com>
+Date:   Tue Aug 19 20:43:04 2025 +0545
+
+    Commit
+
+[33mcommit 84aca1fe5e0049966adab4204f7b94fdd07cc85d[m
+Author: Nawaraj Neupane <nawarajneupane2003@gmail.com>
+Date:   Mon Aug 18 21:11:11 2025 +0545
+
+    Initial Commit

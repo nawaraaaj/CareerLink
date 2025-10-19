@@ -154,7 +154,7 @@ namespace CarrerLink.Controllers
                     claims.Add(claim3);
 
 
-                    // 3.If user is a recruiter, add RecruiterId claim
+                    
                     var user = userExist[0];
                     if (user.UserType == "Recruiter")
                     {

@@ -84,8 +84,12 @@ namespace CarrerLink.Controllers
             if (job == null)
                 return NotFound();
 
-            var userId = int.Parse(User.FindFirst("UserId")?.Value ?? "0");
-            if (job.RecruiterId != userId)
+            var recruiterIdClaim = User.FindFirst("RecruiterId")?.Value;
+            if (recruiterIdClaim == null)
+                return Forbid();
+
+            int recruiterId = int.Parse(recruiterIdClaim);
+            if (job.RecruiterId != recruiterId)
                 return Forbid();
 
             var applications = await _context.Application

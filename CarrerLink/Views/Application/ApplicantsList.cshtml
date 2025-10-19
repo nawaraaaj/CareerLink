@@ -1,0 +1,70 @@
+﻿@model IEnumerable<CarrerLink.Models.Application>
+
+@{
+    ViewData["Title"] = "Applicants List";
+}
+
+<h2 class="mt-4 mb-3">Applicants for this Job</h2>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        No applicants have applied for this job yet.
+    </div>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead class="table-primary">
+            <tr>
+                <th>Photo</th>
+                <th>Applicant Name</th>
+                <th>Email</th>
+                <th>Skills</th>
+                <th>Experience</th>
+                <th>Education</th>
+                <th>Resume</th>
+                <th>Applied Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var app in Model)
+            {
+                var applicant = app.Applicant;
+                var user = applicant?.User;
+
+                <tr>
+                    <td>
+                        @if (!string.IsNullOrEmpty(applicant?.ProfilePicturePath))
+                        {
+                            <img src="@Url.Content(applicant.ProfilePicturePath)" alt="Profile Picture"
+                                 width="50" height="50" style="object-fit:cover;border-radius:50%;" />
+                        }
+                        else
+                        {
+                            <span class="text-muted">No Photo</span>
+                        }
+                    </td>
+                    <td>@user?.Name</td>
+                    <td>@user?.Email</td>
+                    <td>@applicant?.Skills</td>
+                    <td>@applicant?.Experience</td>
+                    <td>@applicant?.Education</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(applicant?.ResumePath))
+                        {
+                            <a href="@Url.Content(applicant.ResumePath)" target="_blank" class="btn btn-sm btn-outline-primary">
+                                View Resume
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="text-muted">No Resume</span>
+                        }
+                    </td>
+                    <td>@app.AppliedAt.ToString("yyyy-MM-dd")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

@@ -44,7 +44,7 @@
                         </li>
 
                         @if (User.Identity.IsAuthenticated && User.IsInRole("Recruiter"))
-                        {
+                        {                       
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Job" asp-action="Create">Post Job</a>
                             </li>

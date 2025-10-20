@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<CarrerLink.Models.Application>
+@Html.AntiForgeryToken()
 
 @{
     ViewData["Title"] = "Applicants List";
@@ -16,7 +17,7 @@ else
 {
     <table class="table table-bordered table-striped">
         <thead class="table-primary">
-            <tr>
+            <tr>s
                 <th>Photo</th>
                 <th>Applicant Name</th>
                 <th>Email</th>
@@ -25,6 +26,8 @@ else
                 <th>Education</th>
                 <th>Resume</th>
                 <th>Applied Date</th>
+                <th>Status</th>
+                <th>Change Status</th>
             </tr>
         </thead>
         <tbody>
@@ -63,8 +66,44 @@ else
                         }
                     </td>
                     <td>@app.AppliedAt.ToString("yyyy-MM-dd")</td>
+                    <td id="status-@app.ApplicationId">@app.Status</td>
+                    <td>
+                        @Html.DropDownList(
+                        "status",
+                                new SelectList(new List<string> { "Pending", "UnderReview", "Accepted", "Rejected" }, app.Status),
+                                new { @class = "form-select", onchange = $"updateStatus({app.ApplicationId}, this.value)" }
+                                )
+                    </td>
+
                 </tr>
             }
         </tbody>
     </table>
 }
+
+<script>
+           function updateStatus(applicationId, status) {
+        const tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
+        const token = tokenInput ? tokenInput.value : '';
+
+        fetch('/Application/UpdateStatus', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'RequestVerificationToken': token
+            },
+            body: `applicationId=${applicationId}&status=${encodeURIComponent(status)}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById(`status-${applicationId}`).innerText = data.newStatus;
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(err => console.error(err));
+    }
+
+
+</script>

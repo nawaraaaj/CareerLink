@@ -70,8 +70,10 @@ namespace CarrerLink.Controllers
 
             var applications = await _context.Application
                 .Include(a => a.Job)
+                .ThenInclude(j => j.Recruiter)
                 .Where(a => a.ApplicantId == applicant.ApplicantId)
                 .ToListAsync();
+
 
             return View(applications);
         }
@@ -103,21 +105,20 @@ namespace CarrerLink.Controllers
 
         // application status
         [HttpPost]
-        [ValidateAntiForgeryToken] 
+        [Authorize(Roles = "Recruiter")]
         public async Task<IActionResult> UpdateStatus(int applicationId, string status)
         {
-            var application = await _context.Application
-                .FirstOrDefaultAsync(a => a.ApplicationId == applicationId);
+            var application = await _context.Application.FindAsync(applicationId);
 
             if (application == null)
-                return Json(new { success = false, message = "Application not found." });
+                return NotFound();
 
             application.Status = status;
+
+            _context.Update(application);
             await _context.SaveChangesAsync();
 
-            return Json(new { success = true, newStatus = status });
+            return RedirectToAction("ApplicantsList", new { jobId = application.JobId });
         }
-
-
     }
 }

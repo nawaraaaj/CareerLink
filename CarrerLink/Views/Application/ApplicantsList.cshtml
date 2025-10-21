@@ -68,11 +68,16 @@ else
                     <td>@app.AppliedAt.ToString("yyyy-MM-dd")</td>
                     <td id="status-@app.ApplicationId">@app.Status</td>
                     <td>
-                        @Html.DropDownList(
-                        "status",
-                                new SelectList(new List<string> { "Pending", "UnderReview", "Accepted", "Rejected" }, app.Status),
-                                new { @class = "form-select", onchange = $"updateStatus({app.ApplicationId}, this.value)" }
-                                )
+                        <form asp-action="UpdateStatus" asp-controller="Application" method="post" style="display:inline;">
+                            <input type="hidden" name="applicationId" value="@app.ApplicationId" />
+
+                            <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+                                <option value="Pending" selected="@(app.Status == "Pending")">Pending</option>
+                                <option value="Reviewed" selected="@(app.Status == "Reviewed")">Reviewed</option>
+                                <option value="Accepted" selected="@(app.Status == "Accepted")">Accepted</option>
+                                <option value="Rejected" selected="@(app.Status == "Rejected")">Rejected</option>
+                            </select>
+                        </form>
                     </td>
 
                 </tr>
@@ -82,28 +87,15 @@ else
 }
 
 <script>
-           function updateStatus(applicationId, status) {
-        const tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
-        const token = tokenInput ? tokenInput.value : '';
-
-        fetch('/Application/UpdateStatus', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'RequestVerificationToken': token
-            },
-            body: `applicationId=${applicationId}&status=${encodeURIComponent(status)}`
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                document.getElementById(`status-${applicationId}`).innerText = data.newStatus;
-            } else {
-                alert('Error: ' + data.message);
-            }
-        })
-        .catch(err => console.error(err));
-    }
-
-
+    document.querySelectorAll('select[name="status"]').forEach(select => {
+        select.addEventListener('change', async e => {
+            const form = e.target.closest('form');
+            const data = new FormData(form);
+            await fetch(form.action, {
+                method: 'POST',
+                body: data
+            });
+        });
+    });
 </script>
+

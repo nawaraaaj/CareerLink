@@ -1,0 +1,53 @@
+﻿@model IEnumerable<CarrerLink.Models.Application>
+
+@{
+    ViewData["Title"] = "My Applications";
+}
+
+<h2>My Applications</h2>
+
+@if (!Model.Any())
+{
+    <p>You haven’t applied for any jobs yet.</p>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Job Title</th>
+                <th>Company</th>
+                <th>Date Applied</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var app in Model)
+            {
+                <tr>
+                    <td>@app.Job?.Title</td>
+                    <td>@app.Job?.Recruiter?.CompanyName</td>
+                    <td>@app.AppliedAt.ToString("yyyy-MM-dd")</td>
+                    <td>
+                        @if (app.Status == "Accepted")
+                        {
+                            <span class="badge bg-success">Accepted</span>
+                        }
+                        else if (app.Status == "Rejected")
+                        {
+                            <span class="badge bg-danger">Rejected</span>
+                        }
+                        else if (app.Status == "Reviewed")
+                        {
+                            <span class="badge bg-info">Reviewed</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Pending</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

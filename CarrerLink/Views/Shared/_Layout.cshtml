@@ -53,6 +53,16 @@
                             </li>
                         }
 
+                        @if (User.IsInRole("Applicant"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Application" asp-action="MyApplications">
+                                    My Applications
+                                </a>
+                            </li>
+                        }
+
+
                     </ul>
                 </div>
                 @if (User.Identity.IsAuthenticated)

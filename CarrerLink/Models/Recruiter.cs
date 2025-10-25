@@ -18,7 +18,9 @@ namespace CarrerLink.Models
         public string Location { get; set; }
         public string Industry { get; set; }
 
-        public virtual User User { get; set; } = null!; //Navigation property
+        public virtual User User { get; set; } = null!; 
         public virtual ICollection<Job> Jobs { get; set; } = new List<Job>();
+        public ICollection<Message> MessagesSent { get; set; }
+
     }
 }

@@ -21,7 +21,7 @@ namespace CarrerLink.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Seed Admin user
+          
             modelBuilder.Entity<User>().HasData(
                 new User
                 {
@@ -34,5 +34,6 @@ namespace CarrerLink.Data
                 }
             );
         }
+        public DbSet<CarrerLink.Models.Message> Message { get; set; } = default!;
     }
 }

@@ -19,7 +19,8 @@ namespace CarrerLink.Models
         public string Education { get; set; }
         public string PortfolioUrl { get; set; }
 
-
         public virtual User User { get; set; } = null!;
+        public ICollection<Message> MessagesReceived { get; set; }
+
     }
 }

@@ -90,7 +90,7 @@ namespace CarrerLink.Controllers
                 var userExist = (from u in _context.User where u.Email == userViewModel.Email select u).ToList();
                 if (userExist.Count() > 0)
                 {
-                 ViewData["ErrorMessage"] = "User already exists.";
+                    ViewData["ErrorMessage"] = "User already exists.";
                 }
                 else
                 {
@@ -110,9 +110,9 @@ namespace CarrerLink.Controllers
                          new Claim(ClaimTypes.Role, UserType),
                          new Claim(ClaimTypes.Name, user.Name)
                     };
-                   
+
                     var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    
+
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
 
                     if (UserType == "Applicant")
@@ -154,7 +154,7 @@ namespace CarrerLink.Controllers
                     claims.Add(claim3);
 
 
-                    
+
                     var user = userExist[0];
                     if (user.UserType == "Recruiter")
                     {

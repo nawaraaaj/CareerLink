@@ -28,6 +28,7 @@ else
                 <th>Applied Date</th>
                 <th>Status</th>
                 <th>Change Status</th>
+                <th>Send Message</th>
             </tr>
         </thead>
         <tbody>
@@ -73,11 +74,15 @@ else
 
                             <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
                                 <option value="Pending" selected="@(app.Status == "Pending")">Pending</option>
+                                <option value="ShortListed" selected="@(app.Status == "ShortListeded")">ShortListed</option>
                                 <option value="Reviewed" selected="@(app.Status == "Reviewed")">Reviewed</option>
                                 <option value="Accepted" selected="@(app.Status == "Accepted")">Accepted</option>
                                 <option value="Rejected" selected="@(app.Status == "Rejected")">Rejected</option>
                             </select>
                         </form>
+                    </td>
+                    <td>
+                        <a asp-controller="Message" asp-action="Create" asp-route-ApplicantId="@applicant.ApplicantId" class="btn btn-primary btn-sm">Send Message</a>
                     </td>
 
                 </tr>

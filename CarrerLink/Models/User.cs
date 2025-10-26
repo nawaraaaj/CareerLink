@@ -7,7 +7,7 @@
         public string Email { get; set; }
         public string Password { get; set; } 
         public string Mobile { get; set; }
-        public string UserType { get; set; } // "Applicant" or "Recruiter"
+        public string UserType { get; set; }
 
         public virtual Applicant? Applicant { get; set; }
         public virtual Recruiter? Recruiter { get; set; }

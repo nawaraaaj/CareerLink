@@ -15,6 +15,7 @@ namespace CarrerLink.Data
         public DbSet<Recruiter> Recruiter { get; set; } = default!;
         public DbSet<Job> Job { get; set; } = default!;
         public DbSet<Application> Application { get; set; }
+        public DbSet<Message> Message { get; set; } = default!;
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -34,6 +35,5 @@ namespace CarrerLink.Data
                 }
             );
         }
-        public DbSet<CarrerLink.Models.Message> Message { get; set; } = default!;
     }
 }

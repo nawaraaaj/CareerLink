@@ -1,0 +1,43 @@
+﻿@model IEnumerable<CarrerLink.Models.Message>
+
+@{
+    ViewData["Title"] = "My Messages";
+}
+
+<div class="container">
+    <h2>My Messages</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            <p>You have no messages yet.</p>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-md-8">
+                @foreach (var message in Model)
+                {
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>From: @message.Recruiter?.User?.Name</strong>
+                                    @if (!string.IsNullOrEmpty(message.Recruiter?.CompanyName))
+                                    {
+                                        <span class="text-muted">(@message.Recruiter.CompanyName)</span>
+                                    }
+                                </div>
+                                <small class="text-muted">@message.SentDate.ToString("MMM dd, yyyy hh:mm tt")</small>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">@message.Content</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>

@@ -220,6 +220,28 @@ namespace CarrerLink.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // GET: Applicant/Messages
+        public async Task<IActionResult> Message()
+        {
+            var userEmail = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
+            var applicant = await _context.Applicant
+                .Include(a => a.User)
+                .FirstOrDefaultAsync(a => a.User.Email == userEmail);
+
+            if (applicant == null)
+            {
+                return NotFound();
+            }
+
+            var messages = await _context.Message
+                .Include(m => m.Recruiter)
+                .ThenInclude(r => r.User)
+                .Where(m => m.ApplicantId == applicant.ApplicantId)
+                .OrderByDescending(m => m.SentDate)
+                .ToListAsync();
+
+            return View(messages);
+        }
         private bool ApplicantExists(int id)
         {
             return _context.Applicant.Any(e => e.ApplicantId == id);

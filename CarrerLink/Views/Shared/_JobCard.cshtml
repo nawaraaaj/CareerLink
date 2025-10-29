@@ -48,16 +48,13 @@
                 <a asp-controller="Job" asp-action="Details" asp-route-id="@Model.JobId"
                    class="btn btn-sm btn-outline-primary w-100 mb-2">View Details</a>
 
-                @if (User.IsInRole("Applicant"))
+                @if (User.IsInRole("Applicant") && remainingDays > 0)
                 {
                     <form asp-controller="Application" asp-action="Apply" method="post">
                         <input type="hidden" name="jobId" value="@Model.JobId" />
                         <button type="submit" class="btn btn-sm btn-success w-100">Apply Now</button>
                     </form>
-
-                }     
-
-
+                }
                 else if (User.IsInRole("Recruiter") &&
                 Model.Recruiter?.UserId == int.Parse(User.FindFirst("UserId")?.Value ?? "0"))
                 {

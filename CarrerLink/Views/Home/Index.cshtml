@@ -8,6 +8,10 @@
     var userRole = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value ?? "No Role";
     var userId = User.FindFirst("UserId")?.Value ?? "No UserId";
 }
+@{
+    var availableJobs = Model.Where(j => j.ApplicationDeadline >= DateTime.Now).ToList();
+    var expiredJobs = Model.Where(j => j.ApplicationDeadline < DateTime.Now).ToList();
+}
 
 <div class="container mt-4">
     <div class="text-center mb-4">
@@ -56,11 +60,17 @@
             </div>
         </form>
 
-        <!-- Job List -->
-        @if (Model.Any())
+         <!-- Job Sections -->
+    @if (Model.Any())
+    {
+       
+
+        <!-- Available Jobs -->
+        <h4 class="mb-3 text-success fw-bold border-bottom pb-2">Available Jobs</h4>
+        @if (availableJobs.Any())
         {
             <div class="row">
-                @foreach (var job in Model)
+                @foreach (var job in availableJobs)
                 {
                     @await Html.PartialAsync("_JobCard", job)
                 }
@@ -68,14 +78,37 @@
         }
         else
         {
-            <div class="text-center text-muted mt-4">
-                <i class="bi bi-search fs-1"></i>
-                <p class="mt-2">No jobs found matching your search criteria.</p>
+            <p class="text-muted">No currently available jobs.</p>
+        }
+
+        <!-- Expired Jobs -->
+        <h4 class="mt-5 mb-3 text-danger fw-bold border-bottom pb-2">Expired Jobs</h4>
+        @if (expiredJobs.Any())
+        {
+            <div class="row">
+                @foreach (var job in expiredJobs)
+                {
+                    @await Html.PartialAsync("_JobCard", job)
+                }
             </div>
         }
-    </div>
+        else
+        {
+            <p class="text-muted">No expired jobs.</p>
+        }
+    }
+    else
+    {
+        <div class="text-center text-muted mt-4">
+            <i class="bi bi-search fs-1"></i>
+            <p class="mt-2">No jobs found matching your search criteria.</p>
+        </div>
+    }
+</div>
     
 
+
+    <!-- Pagination -->
 @if (ViewBag.TotalPages > 1)
 {
         <nav aria-label="Job pagination">
